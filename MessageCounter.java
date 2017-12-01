@@ -13,6 +13,8 @@ public class MessageCounter {
     
     private int messages;
     private int posMessages;
+    private String lastUpdatedUser = "No Messages";
+    
     
     public void addMessage() {
         messages++;
@@ -28,5 +30,13 @@ public class MessageCounter {
     
     public int getPosMessages() {
         return posMessages;
+    }
+    
+    public void setUpdated(String id) {
+        this.lastUpdatedUser = id;
+    }
+    
+    public String getUpdated() {
+        return lastUpdatedUser;
     }
 }

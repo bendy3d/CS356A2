@@ -5,7 +5,9 @@
  */
 package cs356a2;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Stack;
 import java.util.Vector;
 import javax.swing.JTree;
@@ -22,6 +24,9 @@ public class UserView extends javax.swing.JFrame {
     private Vector<String> messagesData = new Vector<String>();
     private SearchTree searchTree;
     private MessageCounter messageCounter;
+    private SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+    private Date timeCreated;
+    private Date timeUpdate;
     /**
      * Creates new form UserView
      */
@@ -30,6 +35,7 @@ public class UserView extends javax.swing.JFrame {
         this.tree = tree;
         searchTree = new SearchTree(tree);
         this.messageCounter = messageCounter;
+        this.timeCreated = new Date(user.getCreated());
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         updateView();
@@ -110,6 +116,10 @@ public class UserView extends javax.swing.JFrame {
         return listdata;
     }
     
+    public Date getTimeUpdate() {
+        return timeUpdate;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,6 +140,8 @@ public class UserView extends javax.swing.JFrame {
         messagesList = new javax.swing.JList<>();
         userIdInput = new javax.swing.JTextField();
         refreshButton = new javax.swing.JButton();
+        lastUpdated = new javax.swing.JLabel();
+        updateLable = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -198,16 +210,25 @@ public class UserView extends javax.swing.JFrame {
                 .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        lastUpdated.setText("Created: " + sdf.format(timeCreated));
+
+        updateLable.setText("Last Update: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lastUpdated, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(updateLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 12, Short.MAX_VALUE)
@@ -216,12 +237,17 @@ public class UserView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 437, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lastUpdated)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 449, Short.MAX_VALUE)
+                .addComponent(updateLable)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 31, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 31, Short.MAX_VALUE)))
         );
 
         pack();
@@ -249,6 +275,12 @@ public class UserView extends javax.swing.JFrame {
         messageInput.setText("");
         messageCounter.addMessage();
         if (isPos) messageCounter.addPosMessage();
+        
+        long currentTime = System.currentTimeMillis();
+        timeUpdate = new Date(currentTime);
+        updateLable.setText("Last Updated: " + sdf.format(timeUpdate));
+        messageCounter.setUpdated(user.getID());
+        
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
@@ -263,10 +295,12 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lastUpdated;
     private javax.swing.JTextArea messageInput;
     private javax.swing.JList<String> messagesList;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton submitButton;
+    private javax.swing.JLabel updateLable;
     private javax.swing.JTextField userIdInput;
     // End of variables declaration//GEN-END:variables
 

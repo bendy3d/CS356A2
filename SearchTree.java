@@ -73,4 +73,39 @@ public class SearchTree {
         return searchNodes;
     }
     
+    public boolean isValid() {
+        List<UserNode> searchNodes = getSearchNodes((UserNode)tree.getModel().getRoot());
+        
+        UserNode currentNode = (UserNode)tree.getLastSelectedPathComponent();
+
+        boolean foundNode = true;
+        int bookmark = -1;
+
+        if( currentNode != null ) {
+            for(int index = 0; index < searchNodes.size(); index++) {
+                if( searchNodes.get(index) == currentNode ) {
+                    bookmark = index;
+                    break;
+                }
+            }
+        }
+
+        for(int index = bookmark + 1; index < searchNodes.size(); index++) {    
+            if(searchNodes.get(index).toString().toLowerCase().contains(" ")) {
+                foundNode = false;
+                break;
+            }
+        }
+
+        if( foundNode == false ) {
+            for(int index = 0; index <= bookmark; index++) {    
+                if(searchNodes.get(index).toString().toLowerCase().contains(" ")) {
+                    foundNode = false;
+                    break;
+                }
+            }
+        }
+        
+        return foundNode;
+    }
 }

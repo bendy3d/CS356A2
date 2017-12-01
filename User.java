@@ -20,11 +20,14 @@ public class User extends UserNode {
     private List<User> followers = new ArrayList<>();
     private Stack newsFeed = new Stack();
     private Stack messages = new Stack();
+    private long timeCreated;
+
     
     public User (String id) {
         this.id = id;
         userObject = id;
         isUser = true;
+        timeCreated = System.currentTimeMillis();
     }
     
     public List getFollowing() {
@@ -57,5 +60,9 @@ public class User extends UserNode {
     
     public void addMessage(String message) {
         messages.push(message);
+    }
+    
+    public long getCreated() {
+        return timeCreated;
     }
 }
